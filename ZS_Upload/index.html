@@ -1,214 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Download Zombie Survivor</title>
-	<link rel="icon" type="image/png" href="icon.png">
-	<style>
-		body {
-			text-align: center;
-			background: black;
-			background-size: cover; 
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			min-height: 100vh;
-			overflow: hidden;
-		}
-		button {
-			margin-top: 20px; /* Abstand zwischen den Buttons */
-			color: rgb(0, 0, 0);
-			background-color: rgb(255, 157, 229);
-			border: none;
-			padding: 10px 20px;
-			animation: neonglow 2s infinite alternate;
-			border-radius: 20px;
-		}
-
-		button:hover {
-			animation: sickBack 5s infinite alternate;
-		}
-
-		/* LOADER */
-		#loader {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100vh;
-			background-color: black;
-			color: white;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 40px;
-			animation: fadeOut 1s ease-out forwards;
-			animation-delay: 3s;
-			z-index: 10;
-		}
-
-		@keyframes slideText {
-			0% { transform: translateX(-100%); opacity: 0; }
-			50% { opacity: 1; }
-			100% { transform: translateX(0); opacity: 1; }
-		}
-
-		#loader span {
-			display: inline-block;
-			animation: slideText 3s ease-out forwards;
-		}
-
-		@keyframes fadeOut {
-			to { opacity: 0; visibility: hidden; }
-		}
-
-		#content {
-			opacity: 0;
-			transform: translateY(-30px);
-			animation: fadeIn 2s ease-out forwards;
-			animation-delay: 3s;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			min-height: 100vh;
-		}
-
-		@keyframes fadeIn {
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-
-		h1 {
-			font-size: 40px;
-			animation: sickText 10s infinite alternate;
-			color: white;
-		}
-
-		@keyframes sickText {
-			0% { text-shadow: 0 0 10px red; color: red; }
-			25% { text-shadow: 0 0 10px orange; color: orange; }
-			50% { text-shadow: 0 0 10px lime; color: lime; }
-			75% { text-shadow: 0 0 10px cyan; color: cyan; }
-			100% { text-shadow: 0 0 10px magenta; color: magenta; }
-		}
-
-		@keyframes neonglow {
-			0% { box-shadow: 0 0 10px hotpink; }
-			50% { box-shadow: 0 0 60px hotpink; }
-			100% { box-shadow: 0 0 10px hotpink; }
-		}
-
-		@keyframes sickBack {
-			0% { background-color: red; }
-			25% { background-color: orange; }
-			50% { background-color: lime }
-			75% { background-color: cyan }
-			100% { background-color: magenta;}
-		}
-
-		.download-wrapper {
-			position: relative;
-			display: inline-block;
-			margin-top: 20px;
-		}
-
-		.download-btn {
-			color: black;
-			background-color: rgb(255, 157, 229);
-			border: none;
-			padding: 10px 20px;
-			animation: neonglow 2s infinite alternate;
-			border-radius: 20px;
-			cursor: pointer;
-			transition: all 0.5s ease;
-			position: relative;
-			z-index: 1;
-		}
-
-		.download-btn.downloading {
-			border-radius: 50%;
-			width: 60px;
-			height: 60px;
-			padding: 0;
-			color: transparent;
-		}
-
-		.download-btn::after {
-			content: '';
-			position: absolute;
-			top: -5px;
-			left: -5px;
-			width: 70px;
-			height: 70px;
-			border: 3px solid transparent;
-			border-top: 3px solid white;
-			border-radius: 50%;
-			opacity: 0;
-			transition: opacity 0.3s;
-		}
-
-		.download-btn.downloading::after {
-			opacity: 1;
-			animation: spin 2s linear forwards;
-		}
-
-		@keyframes spin {
-			from { transform: rotate(0deg); }
-			to { transform: rotate(360deg); }
-		}
-
-		button:hover {
-			animation: sickBack 5s infinite alternate;
-		}
-	</style>
+  <meta charset="UTF-8">
+  <title>Automatischer Download</title>
 </head>
 <body>
+<script>
+  // URL der ZIP-Datei
+  const zipUrl = 'Zombie Survivor.zip';
 
-	<!-- LOADER -->
-	<div id="loader">
-		<span>Loading…</span>
-	</div>
+  // Funktion zum Starten des Downloads
+  function downloadAndClose() {
+    const a = document.createElement('a');
+    a.href = zipUrl;
+    a.download = ''; // Leer lassen = Originalname beibehalten
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-	<!-- HAUPTINHALT -->
-	<div id="content">
-		<h1>Download Zombie Survivor</h1>
+    // Fenster nach kurzer Verzögerung schließen
+    setTimeout(() => {
+      window.close();
+    }, 1000); // 1 Sekunde warten, um Download zu starten
+  }
 
-		<div class="download-wrapper">
-			<button class="download-btn" id="dlBtn"><span>Zombie Survivor<br>Click here!</span></button><br>
-			<button class="download-btn" onclick="direct()"><span>Direct Donwload</span></button>
-		</div>
-
-		<button onclick="info()">Mehr Information</button>
-	</div>
-
-	<script>
-		function direct() {
-			window.location.href = "Zombie Survivor.zip";
-		}
-
-		function info() {
-			window.location.href = "info.html";
-		}
-
-		const btn = document.getElementById("dlBtn");
-
-		btn.addEventListener("click", function () {
-			if (btn.classList.contains("downloading")) return;
-
-			btn.classList.add("downloading");
-
-			setTimeout(() => {
-				btn.classList.remove("downloading");
-				btn.innerHTML = "<span>Downloaded</span>";
-				// Hier könntest du auch den Download starten:
-				window.location.href = "https://gofile.io/d/8c088942-4f91-4d8a-8293-c8a109bb0204";
-			}, 2000); // 2 Sekunden Ladeanimation
-		});
-	</script>
+  // Direkt beim Laden ausführen
+  window.onload = downloadAndClose;
+</script>
 </body>
 </html>
